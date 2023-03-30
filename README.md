@@ -8,7 +8,7 @@ the first to form a horizontal, vertical, or diagonal line of four of one's own 
 <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/bastiromer/connect_four"> <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/bastiromer/connect_four">
 
 ## Coveralls Badge
-{<img src="https://coveralls.io/repos/github/bastiromer/connect_four/badge.svg?branch=master" alt="Coverage Status" />}[https://coveralls.io/github/bastiromer/connect_four?branch=master]
+<img src="https://coveralls.io/repos/github/bastiromer/connect_four/badge.svg?branch=master" alt="Coverage Status" />
 
 ## LICENSE
 <img alt="GitHub" src="https://img.shields.io/github/license/bastiromer/connect_four">
