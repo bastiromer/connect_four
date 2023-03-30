@@ -5,8 +5,10 @@ lazy val root = project
   .settings(
     name := "connect_four",
     version := "0.1.0-SNAPSHOT",
-
     scalaVersion := scala3Version,
 
-    libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test
+    libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.15",
+    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.15" % Test,
+    libraryDependencies += "org.scoverage" % "sbt-scoverage_2.12_1.0" % "1.8.2"
+
   )
