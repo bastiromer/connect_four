@@ -1,10 +1,7 @@
 package model
 
-import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers._
-
+import org.scalatest._
 class FieldSpec extends AnyWordSpec:
-  //val field = new Field
 
   "connectFour" should {
     "have a bar as String of form '+---+---+---+---+---+---+---+'" in {

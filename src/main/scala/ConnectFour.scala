@@ -1,4 +1,3 @@
-
 import model.Field
 
 object ConnectFour:
