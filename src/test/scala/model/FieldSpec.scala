@@ -1,6 +1,7 @@
 package model
 
-import org.scalatest._
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatest.matchers.should.Matchers._
 class FieldSpec extends AnyWordSpec:
 
   "connectFour" should {
