@@ -1,4 +1,3 @@
-
 import model.Field
 
 object ConnectFour:
@@ -8,4 +7,5 @@ object ConnectFour:
     println("\u001B[32mWelcome to connect four!!")
     println("\u001B[31mPlayer1")
     println("\u001B[33mPlayer2\u001B[0m")
+
     print(field.printField())
