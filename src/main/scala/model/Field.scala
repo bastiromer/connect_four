@@ -1,12 +1,13 @@
 package model
 
-class Field():
-
-  def printField(height: Int = 6, width: Int = 3, cellNum: Int = 7): String =
-    (bar(width, cellNum) + cells(width, cellNum)) * height + bar(width, cellNum)
-
-  def bar(width: Int = 3, cellNum: Int = 7): String =
-    (("+" + "-" * width) * cellNum) + "+" + "\n"
-
-  def cells(width: Int = 3, cellNum: Int = 7): String =
-    ("|" + " " * width) * cellNum + "|" + "\n"
+case class Field(matrix: Matrix[Stone]):
+  def this(size: Int, filling: Stone) = this(new Matrix(size, filling))
+  val size = matrix.size
+  val eol = sys.props("line.separator")
+  def bar(cellWidth: Int = 3, cellNum: Int = 3) = (("+" + "-" * cellWidth) * cellNum) + "+" + eol
+  def cells(row: Int, cellWidth: Int = 3) =
+    matrix.row(row).map(_.toString).map(" " * ((cellWidth - 1) / 2) + _ + " " * ((cellWidth - 1) / 2)).mkString("|", "|", "|") + eol
+  def mesh(cellWidth: Int = 3) =
+    (0 until size).map(cells(_, cellWidth)).mkString(bar(cellWidth, size), bar(cellWidth, size), bar(cellWidth, size))
+  override def toString = mesh()
+  def put(stone: Stone, x: Int, y: Int) = copy(matrix.replaceCell(x, y, stone))
