@@ -2,27 +2,29 @@ package model
 
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers._
+
 class FieldSpec extends AnyWordSpec:
+  val field = new Field()
 
   "connectFour" should {
     "have a bar as String of form '+---+---+---+---+---+---+---+'" in {
-      bar() should be("+---+---+---+---+---+---+---+" + eol)
+      field.bar() should be("+---+---+---+---+---+---+---+\n")
     }
 
     "have a scalable bar" in {
-      bar(1, 1) should be("+-+" + eol)
-      bar(1, 2) should be("+-+-+" + eol)
-      bar(5, 3) should be("+---+---+---+---+---+" + eol)
+      field.bar(1, 1) should be("+-+\n")
+      field.bar(1, 2) should be("+-+-+\n")
+      field.bar(3, 5) should be("+---+---+---+---+---+\n")
     }
 
     "have cells as String of form '|   |   |   |   |   |   |   |'" in {
-      cells() should be("|   |   |   |   |   |   |   |" + eol)
+      field.cells() should be("|   |   |   |   |   |   |   |\n")
     }
 
     "have scalable cells" in {
-      cells(1, 1) should be("| |" + eol)
-      cells(1, 2) should be("| | |" + eol)
-      cells(5, 3) should be("|   |   |   |   |   |" + eol)
+      field.cells(1, 1) should be("| |\n")
+      field.cells(1, 2) should be("| | |\n")
+      field.cells(3, 5) should be("|   |   |   |   |   |\n")
     }
 
 
@@ -34,7 +36,7 @@ class FieldSpec extends AnyWordSpec:
       "+---+---+---+\n" +
       "|   |   |   |\n" +
       "+---+---+---+\n" in {
-      printfield(3, 3, 3) should be(
+      field.printField(3, 3, 3) should be(
         "+---+---+---+\n" +
           "|   |   |   |\n" +
           "+---+---+---+\n" +
