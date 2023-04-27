@@ -1,4 +1,4 @@
-package model
+package connectFout.model
 
 import scala.util.control.Breaks._
 

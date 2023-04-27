@@ -1,4 +1,4 @@
-package model
+package connectFout.model
 
 case class Matrix[T](rows: Vector[Vector[T]]):
   def this(width: Int, height: Int, filling: T) = this(Vector.tabulate(height, width) { (row, col) => filling })

@@ -1,7 +1,8 @@
 package model
 
+import connectFout.model.Field
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers._
+import org.scalatest.matchers.should.Matchers.*
 
 class FieldSpec extends AnyWordSpec {
   "A TicTacToe Field" when {

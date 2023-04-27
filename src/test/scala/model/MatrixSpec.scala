@@ -1,7 +1,8 @@
 package model
 
+import connectFout.model.Matrix
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers._
+import org.scalatest.matchers.should.Matchers.*
 
 class MatrixSpec extends AnyWordSpec {
   "A Matrix is a tailor-made immutable data type that contains a two-dimentional Vector of something. A Matrix" when {

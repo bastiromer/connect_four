@@ -1,4 +1,4 @@
-package model
+package connectFout.model
 
 val reset = "\u001b[0m"
 val red = "\u001b[31m"
