@@ -1,4 +1,4 @@
-package connectFout
+package connectFour
 
 import aview.TUI
 import model.{Field, Stone}

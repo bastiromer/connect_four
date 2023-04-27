@@ -1,4 +1,4 @@
-package connectFout
+package connectFour
 package util
 
 trait Observer:

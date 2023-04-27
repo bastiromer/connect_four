@@ -1,7 +1,8 @@
 package connectFour
 package controller
 
-import model.Field
+
+import connectFour.model.Field
 import model.Stone
 import util.Observable
 
