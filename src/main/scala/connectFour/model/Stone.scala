@@ -1,5 +1,7 @@
 package connectFour.model
 
+import org.scalactic.Prettifier.default
+
 val reset = "\u001b[0m"
 val red = "\u001b[31m"
 val yellow = "\u001b[33m"
