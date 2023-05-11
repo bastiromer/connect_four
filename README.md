@@ -5,7 +5,7 @@ turns dropping colored tokens into a seven-column, six-row vertically suspended 
 straight down, occupying the lowest available space within the column. The objective of the game is to be <br>
 the first to form a horizontal, vertical, or diagonal line of four of one's own tokens.
 
-[![Scala CI](https://github.com/bastiromer/connect_four/actions/workflows/scala.yml/badge.svg)](https://github.com/bastiromer/connect_four/actions/workflows/scala.yml) [![Coverage Status](https://coveralls.io/repos/github/bastiromer/connect_four/badge.svg?branch=master)](https://coveralls.io/github/bastiromer/connec_four?branch=master)
+[![Scala CI](https://github.com/bastiromer/connect_four/actions/workflows/scala.yml/badge.svg)](https://github.com/bastiromer/connect_four/actions/workflows/scala.yml) [![Coverage Status](https://coveralls.io/repos/github/bastiromer/connect_four/badge.svg?branch=develop)](https://coveralls.io/github/bastiromer/connect_four?branch=develop)
 
 
 ## LICENSE
