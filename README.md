@@ -7,6 +7,7 @@ the first to form a horizontal, vertical, or diagonal line of four of one's own 
 
 [![Scala CI](https://github.com/bastiromer/connect_four/actions/workflows/scala.yml/badge.svg)](https://github.com/bastiromer/connect_four/actions/workflows/scala.yml)
 
+
 ## LICENSE
 <img alt="GitHub" src="https://img.shields.io/github/license/bastiromer/connect_four">
 
