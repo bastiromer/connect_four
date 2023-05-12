@@ -31,6 +31,17 @@ class MatrixSpec extends AnyWordSpec {
         val returnedMatrix = matrix.fill("x")
         returnedMatrix.cell(0, 0) should be("x")
       }
+      "replacing a cell" should {
+        "return a new Matrix with the updated value" in {
+          val matrix = Matrix(Vector(Vector(1, 2), Vector(3, 4)))
+          val updatedMatrix = matrix.replaceCell(0, 0, 5)
+          updatedMatrix should not be theSameInstanceAs(matrix)
+          updatedMatrix.cell(0, 0) should be(5)
+          updatedMatrix.cell(0, 1) should be(2)
+          updatedMatrix.cell(1, 0) should be(3)
+          updatedMatrix.cell(1, 1) should be(4)
+        }
+      }
     }
   }
 
