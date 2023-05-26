@@ -3,13 +3,17 @@ package aview
 
 import scala.io.StdIn.readLine
 import controller.{Controller, TUIMoveValidator}
-import model.{Player, PlayerFactory, Stone}
+import model.{Move, Player, PlayerFactory, Stone}
 import util.Observer
+import scala.util.{Try,Success,Failure}
+
 
 class TUI(controller: Controller) extends Template(controller) :
   controller.add(this)
 
   override def update: Unit = controller.toString
+
+  override def start: Unit = gameLoop(p1)
 
   override def finalStat: String =
     controller.toString
@@ -19,32 +23,29 @@ class TUI(controller: Controller) extends Template(controller) :
     sys.exit()
 
   override def gameLoop(player: Player): Unit =
-    getInputAndPrintLoop(player = p1)
-
-  def start: Unit =
-    initializePlayers()
-    println(controller.field.toString)
-    getInputAndPrintLoop()
-
-  def initializePlayers(): Unit =
-    val factory = new PlayerFactory()
-    println("Name Spieler 1")
-    p1 = factory.createPlayer(readLine(),"red")
-    println("Name Spieler 2")
-    p2 = factory.createPlayer(readLine(), "yellow")
-
-  def getInputAndPrintLoop(player: Player = p1): Unit =
+    println(controller.toString)
     println(player.name + "s turn")
     println("Enter your move <row> (or q for quit)")
-    val input = readLine
-    //val move = controller.handleInput(player, input)
+    handleInput(readLine,player) match
+      case None =>
+      case Some(move) => controller.doAndPublish(controller.put, move)
+    gameLoop(if player == p1 then p2 else p1)
+
+
+  def inputToInt(input: String): Try[Int] = Try(Integer.parseInt(input))
+
+  def displayError(message: Throwable): Unit = println("incorrect input!")
+
+  def handleInput(input: String, player: Player): Option[Move] =
     input match
-      case "q" => aborted
-      case _ => {
-        val row = input.toInt
-        //controller.makeMove(player, row)
-        println(controller.toString)
-        getInputAndPrintLoop(if player == p1 then p2 else p1)
-      }
-  var p1: Player = new PlayerFactory().createPlayer(" ", "start")
-  var p2: Player = new PlayerFactory().createPlayer(" ", "start")
+      case "q" => aborted; None
+      case "z" => controller.doAndPublish(controller.redo); None
+      case "y" => controller.doAndPublish(controller.undo); None
+      case _ =>
+        inputToInt(input) match
+          case Success(i) => Some(Move(player,i,controller.getCol(i)))
+          case Failure(e) => displayError(e); None
+  
+  var p1: Player = new PlayerFactory().createPlayer("Player1", "yellow")
+  var p2: Player = new PlayerFactory().createPlayer("Player2", "red")
+
