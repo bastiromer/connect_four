@@ -8,8 +8,9 @@ import model.{Move, Player}
 abstract class Template(controller: Controller) extends Observer:
   controller.add(this)
   def run: Unit =
-    start
     update
+    start
+    
   def start: Unit  
   def gameLoop(player:Player): Unit
   def finalStat: String

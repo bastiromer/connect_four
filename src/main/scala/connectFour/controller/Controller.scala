@@ -24,6 +24,6 @@ case class Controller(var field: Field, moveValidator: MoveValidator) extends Ob
     gameState.restartGame(this)
     notifyObservers
 
-  override def toString: String = gameState.printfField(field).toString
+  override def toString: String = gameState.printfField(field).get
   
   def getCol(row: Int): Int = field.moveCorrect(row)

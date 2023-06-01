@@ -9,9 +9,8 @@ import scala.util.{Try,Success,Failure}
 
 
 class TUI(controller: Controller) extends Template(controller) :
-  controller.add(this)
 
-  override def update: Unit = controller.toString
+  override def update: Unit = println(controller.toString)
 
   override def start: Unit = gameLoop(p1)
 
@@ -23,7 +22,6 @@ class TUI(controller: Controller) extends Template(controller) :
     sys.exit()
 
   override def gameLoop(player: Player): Unit =
-    println(controller.toString)
     println(player.name + "s turn")
     println("Enter your move <row> (or q for quit)")
     handleInput(readLine,player) match
@@ -46,6 +44,6 @@ class TUI(controller: Controller) extends Template(controller) :
           case Success(i) => Some(Move(player,i,controller.getCol(i)))
           case Failure(e) => displayError(e); None
   
-  var p1: Player = new PlayerFactory().createPlayer("Player1", "yellow")
-  var p2: Player = new PlayerFactory().createPlayer("Player2", "red")
+  var p1: Player = new PlayerFactory().createPlayer("Player1", "red")
+  var p2: Player = new PlayerFactory().createPlayer("Player2", "yellow")
 
