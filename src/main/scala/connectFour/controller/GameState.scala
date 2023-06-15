@@ -3,12 +3,13 @@ package connectFour.controller
 import connectFour.model.{Field, Move, Player, Stone}
 
 //State Pattern
-trait GameState {
-  def makeMove(controller: Controller, field: Field, player: Player, row: Int): Option[Field] = None
+trait GameState:
+  def makeMove(doThis: Move => Field, move: Move): Option[Field] = None
 
-  def restartGame(controller: Controller): Unit = None
+  def makeMove(doThis: => Field): Option[Field] = None
+
+  //def restartGame(controller: Controller): Unit = None
 
   def printfField(field: Field): Option[String] = None
-  
-  def handleInput(player: Player, input: String): Option[Move] = None
-}
+
+
