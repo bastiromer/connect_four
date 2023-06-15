@@ -10,10 +10,5 @@ lazy val root = project
     
     libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.15",
     libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.15" % Test,
-    //libraryDependencies += "org.scoverage" % "sbt-scoverage_2.12_1.0" % "1.8.2",
-    //jacocoCoverallsServiceName :="github-actions",
-    //jacocoCoverallsBranch := sys.env.get("CI_BRANCH"),
-    //jacocoCoverallsRepoToken := sys.env.get("COVERALLS_REPO_TOKEN")
+    libraryDependencies += ("org.scala-lang.modules" %% "scala-swing" % "3.0.0").cross(CrossVersion.for3Use2_13),
 )
-    //.enablePlugins(JacocoPlugin)
-
