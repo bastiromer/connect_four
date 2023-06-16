@@ -1,14 +1,14 @@
 package connectFour
 
-import connectFour.aview.{TUI,GUI}
-import model.{Field, Stone}
-import controller.Controller
+import connectFour.aview.{GUI, TUI}
+import connectFour.controller.controllerComponent.controllerImpl.Controller
+import connectFour.model.modelComponent.modelImpl.{Field, Stone}
+import com.google.inject.Guice
+import com.google.inject.name.Named
 
 object ConnectFour:
   @main def run: Unit =
-    println("\u001B[31mWelcome to connect four!!\u001B[0m")
+    val injector = Guice.createInjector(new ConnectFourModule)
     val field = new Field(7, 6, Stone.Empty)
     val controller = Controller(field)
-    val tui = TUI(controller)
-    GUI(controller).top
-    tui.run
+    GUI(controller).top;TUI(controller).run
