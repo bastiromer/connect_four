@@ -1,14 +1,17 @@
 package connectFour
 package aview
 
+import connectFour.controller.controllerComponent.ControllerInterface
+import connectFour.model.modelComponent.modelImpl.{Move, Player, PlayerFactory, Stone}
+
 import scala.io.StdIn.readLine
-import controller.Controller
-import model.{Move, Player, PlayerFactory, Stone}
-import util.{Observer,Event}
-import scala.util.{Try,Success,Failure}
+import model.modelComponent
+import util.Event
+
+import scala.util.{Failure, Success, Try}
 
 
-class TUI(controller: Controller) extends Template(controller):
+class TUI(controller: ControllerInterface) extends Template(controller):
 
   override def update(e: Event): Unit = e match
     case Event.Abort => sys.exit
@@ -55,3 +58,4 @@ class TUI(controller: Controller) extends Template(controller):
   
 
 
+  //Feld beim wenn jemand gewonnen hat printen

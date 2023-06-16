@@ -1,7 +1,11 @@
 package connectFour.aview
 
 import connectFour.controller.*
+import connectFour.controller.controllerComponent.ControllerInterface
+import connectFour.controller.controllerComponent.controllerImpl.Controller
 import connectFour.model.*
+import connectFour.model.modelComponent.modelImpl
+import connectFour.model.modelComponent.modelImpl.{Move, Stone}
 import connectFour.util.{Event, Observer}
 
 import java.awt.{Color, Font}
@@ -9,7 +13,7 @@ import javax.swing.SwingConstants
 import scala.swing.*
 import scala.swing.event.*
 
-class GUI(controller: Controller) extends Frame with Observer{
+class GUI(controller: ControllerInterface) extends Frame with Observer:
   controller.add(this)
 
   val ROWS = 6
@@ -18,7 +22,7 @@ class GUI(controller: Controller) extends Frame with Observer{
   val buttonSize = new Dimension(80, 80)
   val buttons = Array.ofDim[Button](ROWS, COLUMNS)
 
-  val textArea = new TextArea(rows = 1, columns = COLUMNS) {
+  var textArea = new TextArea(rows = 1, columns = COLUMNS) {
     font = new Font("Arial", Font.BOLD,24)
     editable = true
     lineWrap = true
@@ -33,7 +37,7 @@ class GUI(controller: Controller) extends Frame with Observer{
     button.minimumSize = buttonSize
     button.reactions += {
       case ButtonClicked(_) =>
-        controller.doAndPublish(controller.put,Move(controller.currentPlayer,col,controller.getCol(col)))
+        controller.doAndPublish(controller.put,modelImpl.Move(controller.currentPlayer,col,controller.getCol(col)))
     }
     button
   }
@@ -74,7 +78,7 @@ class GUI(controller: Controller) extends Frame with Observer{
     open
   }
 
-  def redraw: Unit =
+  /*def redraw: Unit =
     textArea.text = controller.currentPlayer.name +"s turn"
     for {
       row <- 0 until ROWS
@@ -86,10 +90,13 @@ class GUI(controller: Controller) extends Frame with Observer{
         case Stone.Empty => buttons(row)(col).background = Color.white
       }
     }
+  */
+
+  //Implementation mit extra CellPanel Klasse für einzelne Pannels
 
 
   def finalStats: Unit =
-    redraw
+    //redraw
     Dialog.showMessage(this,controller.currentPlayer.name+" hat gewonnen!",title = "Gewonnen")
     sys.exit()
 
@@ -97,6 +104,6 @@ class GUI(controller: Controller) extends Frame with Observer{
   override def update(event: Event): Unit = event match
     case Event.Abort => sys.exit
     case Event.End   => finalStats
-    case Event.Move  => redraw
+    case Event.Move  => None//redraw
 
-}
+  //class CellPanel(x: Int, y: Int)
