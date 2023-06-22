@@ -1,5 +1,5 @@
+import connectFour.model.modelComponent.modelImpl.{Field, HumanPlayer, Stone}
 import org.scalatest.*
-import connectFour.model.{Field, HumanPlayer, Stone}
 
 class FieldSpec extends flatspec.AnyFlatSpec with matchers.should.Matchers {
 

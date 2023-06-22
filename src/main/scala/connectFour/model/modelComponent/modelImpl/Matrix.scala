@@ -1,7 +1,11 @@
-package connectFour.model
+package connectFour.model.modelComponent.modelImpl
 
-case class Matrix[T](rows: Vector[Vector[T]]):
+import com.google.inject.{Guice, Inject}
+import connectFour.ConnectFourModule
+
+case class Matrix[T] @Inject() (rows: Vector[Vector[T]]):
   def this(width: Int, height: Int, filling: T) = this(Vector.tabulate(height, width) { (row, col) => filling })
+  //val injector = Guice.createInjector(new ConnectFourModule)
   val width: Int = rows.size + 1
   val height: Int = rows.size
   def cell(row: Int, col: Int): T = rows(row)(col)
