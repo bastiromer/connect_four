@@ -1,4 +1,6 @@
-package connectFour.model
+package connectFour.model.modelComponent.modelImpl
+
+import connectFour.model.modelComponent.modelImpl.Field
 
 class HumanPlayer (st: Stone, n: String) extends Player:
   override val stone: Stone = st

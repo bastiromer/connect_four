@@ -1,18 +1,18 @@
-import org.scalatest._
-import connectFour.util.{Observer, Observable}
+import org.scalatest.*
+import connectFour.util.{Event, Observable, Observer}
 
 class ObservableSpec extends flatspec.AnyFlatSpec with matchers.should.Matchers {
 
   class SimpleObserver extends Observer {
     var notified = false
-    override def update: Unit = notified = true
+    override def update(e: Event): Unit = notified = true
   }
 
   "An Observable" should "notify its observers when changes occur" in {
     val observable = new Observable {}
     val observer = new SimpleObserver
     observable.add(observer)
-    observable.notifyObservers
+    //observable.notifyObservers
     observer.notified shouldEqual true
   }
 
@@ -23,7 +23,7 @@ class ObservableSpec extends flatspec.AnyFlatSpec with matchers.should.Matchers 
     observable.add(observer1)
     observable.add(observer2)
     observable.remove(observer1)
-    observable.notifyObservers
+    //observable.notifyObservers
     observer1.notified shouldEqual false
     observer2.notified shouldEqual true
   }

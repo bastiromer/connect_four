@@ -1,4 +1,4 @@
-package connectFour.model
+package connectFour.model.modelComponent.modelImpl
 
 import org.scalactic.Prettifier.default
 
