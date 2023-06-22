@@ -1,9 +1,10 @@
 package connectFour.model.modelComponent
-package modelImpl
+package fieldImpl
 
 import scala.util.control.Breaks.*
 import com.google.inject.Inject
 import com.google.inject.name.Named
+import connectFour.model.modelComponent.playerImpl.Player
 
 case class Field @Inject() (matrix: Matrix[Stone]) extends FieldInterface:
   def this(width: Int, height: Int, filling: Stone) = this(new Matrix(width, height, filling))
@@ -34,7 +35,6 @@ case class Field @Inject() (matrix: Matrix[Stone]) extends FieldInterface:
       }
     }
     check
-
 
   override def checkWin: Option[Stone] =
 
@@ -75,8 +75,5 @@ case class Field @Inject() (matrix: Matrix[Stone]) extends FieldInterface:
           return Some(Stone.O)
     // Kein Gewinner gefunden
     None
-
-//Darstellung auf TUI GUI evtl. mit Factory Pattern => erstellt dann entwerder ein Leeres, rotes oder gelbes Feld
-//kann dann auch auf andere Farben erweitert werden, dann kann am anfang auch die Farbe gewählt werden
 
 //Player kann durch weiteres Klassenattribut realisiert werden und dann wie mit put eine copy zurück liefern

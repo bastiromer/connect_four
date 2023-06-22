@@ -1,6 +1,7 @@
 import connectFour.controller.controllerComponent.controllerImpl
 import connectFour.controller.controllerComponent.controllerImpl.Controller
-import connectFour.model.modelComponent.modelImpl.{Field, HumanPlayer, Stone}
+import connectFour.model.modelComponent.fieldImpl.{Field, Stone}
+import connectFour.model.modelComponent.playerImpl.HumanPlayer
 import org.scalatest.*
 import connectFour.util.Observer
 

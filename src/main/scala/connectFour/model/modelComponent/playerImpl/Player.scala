@@ -1,6 +1,6 @@
-package connectFour.model.modelComponent.modelImpl
+package connectFour.model.modelComponent.playerImpl
 
-import connectFour.model.modelComponent.modelImpl.{Field, Move}
+import connectFour.model.modelComponent.fieldImpl.{Field, Move, Stone}
 
 //Factory Pattern
 abstract class Player:

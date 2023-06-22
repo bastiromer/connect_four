@@ -1,6 +1,6 @@
 package connectFour.model
 
-import connectFour.model.modelComponent.modelImpl.Matrix
+import connectFour.model.modelComponent.fieldImpl.Matrix
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
 

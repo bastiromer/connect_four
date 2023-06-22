@@ -5,7 +5,7 @@ import com.google.inject.{AbstractModule, TypeLiteral}
 import connectFour.controller.controllerComponent.ControllerInterface
 import connectFour.controller.controllerComponent.controllerImpl.Controller
 import connectFour.model.modelComponent.FieldInterface
-import connectFour.model.modelComponent.modelImpl.{Field, Stone}
+import connectFour.model.modelComponent.fieldImpl.{Field, Stone}
 
 class ConnectFourModule extends AbstractModule with ScalaModule:
 

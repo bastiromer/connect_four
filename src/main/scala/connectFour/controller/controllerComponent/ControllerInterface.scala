@@ -2,7 +2,8 @@ package connectFour
 package controller.controllerComponent
 
 import connectFour.model.modelComponent.FieldInterface
-import connectFour.model.modelComponent.modelImpl.{Move, Player}
+import connectFour.model.modelComponent.fieldImpl.Move
+import connectFour.model.modelComponent.playerImpl.Player
 import util.Observable
 trait ControllerInterface extends Observable:
   def doAndPublish(doThis: Move => FieldInterface, move:Move): Unit

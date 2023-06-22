@@ -2,7 +2,8 @@ package connectFour
 package controller.controllerComponent.controllerImpl
 
 import connectFour.model.modelComponent.FieldInterface
-import connectFour.model.modelComponent.modelImpl.{Field, Move, PlayerFactory}
+import connectFour.model.modelComponent.fieldImpl.{Field, Move}
+import connectFour.model.modelComponent.playerImpl.PlayerFactory
 import connectFour.util.{Command, UndoManager}
 
 

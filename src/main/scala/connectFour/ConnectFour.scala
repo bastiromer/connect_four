@@ -2,7 +2,7 @@ package connectFour
 
 import connectFour.aview.{GUI, TUI}
 import connectFour.controller.controllerComponent.controllerImpl.Controller
-import connectFour.model.modelComponent.modelImpl.{Field, Stone}
+import connectFour.model.modelComponent.fieldImpl.{Field, Stone}
 import com.google.inject.Guice
 import com.google.inject.name.Named
 

@@ -2,7 +2,8 @@ package connectFour
 package aview
 
 import connectFour.controller.controllerComponent.ControllerInterface
-import connectFour.model.modelComponent.modelImpl.{Move, Player}
+import connectFour.model.modelComponent.fieldImpl.Move
+import connectFour.model.modelComponent.playerImpl.Player
 import util.{Event, Observer}
 
 abstract class Template(controller: ControllerInterface) extends Observer:

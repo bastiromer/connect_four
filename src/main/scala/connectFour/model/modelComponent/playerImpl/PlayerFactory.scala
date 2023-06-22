@@ -1,6 +1,7 @@
-package connectFour.model.modelComponent.modelImpl
+package connectFour.model.modelComponent.playerImpl
 
-import connectFour.model.modelComponent.modelImpl.{HumanPlayer, Player}
+import connectFour.model.modelComponent.fieldImpl.Stone
+import connectFour.model.modelComponent.playerImpl.{HumanPlayer, Player}
 
 class PlayerFactory:
   def createPlayer(name: String, color: String): Player =

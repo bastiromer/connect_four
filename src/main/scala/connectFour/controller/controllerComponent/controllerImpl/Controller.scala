@@ -3,11 +3,12 @@ package controller.controllerComponent
 package controllerImpl
 
 import connectFour.model.modelComponent.FieldInterface
-import connectFour.model.modelComponent.modelImpl.{Field, Move, Player, PlayerFactory, Stone}
+import connectFour.model.modelComponent.fieldImpl.{Field, Move, Stone}
 import connectFour.util.{Command, Event, Observable, UndoManager}
 
 import com.google.inject.{Inject,Guice}
 import com.google.inject.name.Named
+import connectFour.model.modelComponent.playerImpl.{Player, PlayerFactory}
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 
 case class Controller @Inject() (@Named("Field") var field: FieldInterface) extends ControllerInterface:

@@ -4,8 +4,8 @@ import connectFour.controller.*
 import connectFour.controller.controllerComponent.ControllerInterface
 import connectFour.controller.controllerComponent.controllerImpl.Controller
 import connectFour.model.*
-import connectFour.model.modelComponent.modelImpl
-import connectFour.model.modelComponent.modelImpl.{Move, Stone}
+import connectFour.model.modelComponent.fieldImpl
+import connectFour.model.modelComponent.fieldImpl.{Move, Stone}
 import connectFour.util.{Event, Observer}
 
 import java.awt.{Color, Font}
@@ -37,7 +37,7 @@ class GUI(controller: ControllerInterface) extends Frame with Observer:
     button.minimumSize = buttonSize
     button.reactions += {
       case ButtonClicked(_) =>
-        controller.doAndPublish(controller.put,modelImpl.Move(controller.currentPlayer,col,controller.getCol(col)))
+        controller.doAndPublish(controller.put,fieldImpl.Move(controller.currentPlayer,col,controller.getCol(col)))
     }
     button
   }

@@ -2,7 +2,8 @@ package connectFour
 package aview
 
 import connectFour.controller.controllerComponent.ControllerInterface
-import connectFour.model.modelComponent.modelImpl.{Move, Player, PlayerFactory, Stone}
+import connectFour.model.modelComponent.fieldImpl.{Move, Stone}
+import connectFour.model.modelComponent.playerImpl.{Player, PlayerFactory}
 
 import scala.io.StdIn.readLine
 import model.modelComponent
@@ -58,4 +59,5 @@ class TUI(controller: ControllerInterface) extends Template(controller):
   
 
 
-  //Feld beim wenn jemand gewonnen hat printen
+  //Feld wenn jemand gewonnen hat printen
+  //einfacher machen mit vorgegebenen Namen (Spielername am anfang abfragen)
