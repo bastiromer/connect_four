@@ -5,53 +5,45 @@ package controllerImpl
 import connectFour.model.modelComponent.FieldInterface
 import connectFour.model.modelComponent.fieldImpl.{Field, Move, Stone}
 import connectFour.util.{Command, Event, Observable, UndoManager}
-
-import com.google.inject.{Inject,Guice}
+import com.google.inject.{Guice, Inject}
 import com.google.inject.name.Named
-import connectFour.model.modelComponent.playerImpl.{Player, PlayerFactory}
+import connectFour.model.modelComponent.PlayerInterface
+import connectFour.model.modelComponent.fileIOComponent.FileIOInterface
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 
-case class Controller @Inject() (@Named("Field") var field: FieldInterface) extends ControllerInterface:
+case class Controller @Inject() (@Named("Field") var field: FieldInterface, val fileIO: FileIOInterface) extends ControllerInterface:
 
   val undoManager = new UndoManager[FieldInterface]
   
   override def doAndPublish(doThis: Move => FieldInterface, move: Move) =
     field = doThis(move)
     field.checkWin match
-      case Some(Stone.X) | Some(Stone.O) => notifyObservers(Event.End)
+      case Some(_) => notifyObservers(Event.End)
       case None => changePlayer();notifyObservers(Event.Move)
 
   override def doAndPublish(doThis: => FieldInterface) =
     field = doThis
     field.checkWin match
-      case Some(Stone.X) | Some(Stone.O) => notifyObservers(Event.End)
+      case Some(_) => notifyObservers(Event.End)
       case None => changePlayer();notifyObservers(Event.Move)
   override def put(move: Move): FieldInterface = undoManager.doStep(field, PutCommand(move))
   override def undo: FieldInterface = undoManager.undoStep(field)
   override def redo: FieldInterface = undoManager.redoStep(field)
+
+  override def save = fileIO.save(field)
+  override def load: FieldInterface = fileIO.load
   
   override def toString: String = field.toString
 
   override def getCol(row: Int): Int = field.moveCorrect(row)
 
-  override def checkWin: Option[Player] =
-    field.checkWin.get match
-      case p1.stone => Some(p1)
-      case p2.stone => Some(p2)
-      case _ => None
-
+  override def get(row: Int, col: Int): Stone =
+    field.get(row, col)
+  
   override def changePlayer(): Unit =
-    if currentP == p1
-    then currentP = p2
-    else currentP = p1
+    field.changePlayer()
 
-  override def currentPlayer: Player =
-    currentP
+  override def currentPlayer: PlayerInterface =
+    field.currentPlayer
 
-  val p1: Player = new PlayerFactory().createPlayer("Player1", "red")
-  val p2: Player = new PlayerFactory().createPlayer("Player2", "yellow")
-  var currentP: Player = p1
-
-//Spielerlogig in model Schicht
-
-
+  override def abort: Unit = notifyObservers(Event.Abort)

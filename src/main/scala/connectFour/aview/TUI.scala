@@ -2,13 +2,14 @@ package connectFour
 package aview
 
 import connectFour.controller.controllerComponent.ControllerInterface
+import connectFour.model.modelComponent.PlayerInterface
 import connectFour.model.modelComponent.fieldImpl.{Move, Stone}
-import connectFour.model.modelComponent.playerImpl.{Player, PlayerFactory}
 
 import scala.io.StdIn.readLine
 import model.modelComponent
 import util.Event
 
+import scala.util
 import scala.util.{Failure, Success, Try}
 
 
@@ -20,17 +21,14 @@ class TUI(controller: ControllerInterface) extends Template(controller):
     case Event.Move =>
       println(controller.toString)
       println(controller.currentPlayer.name + "s turn")
-      println("Enter your move <row> (or q for quit)")
+      println("Enter your move <row>")
 
   override def start: Unit = gameLoop()
 
   override def finalStats: String =
-    controller.toString
-    controller.currentPlayer.name+" hat gewonnen!"
-
-  override def aborted: Unit =
-    println("\nGame was aborted\n")
-    sys.exit()
+    controller.toString + "\n" +
+    controller.currentPlayer.name+" wins!!"
+  
 
   override def gameLoop(): Unit =
     val player = controller.currentPlayer
@@ -40,24 +38,24 @@ class TUI(controller: ControllerInterface) extends Template(controller):
     gameLoop()
 
 
-  def inputMatchAndToInt(str: String): Try[Int] =
-    Try(Integer.parseInt(str))
+  override def inputMatchAndToInt(str: String): Try[(Int,Int)] =
+    val row = Try(Integer.parseInt(str))
+    row match
+      case Success(value) =>
+        if controller.getCol(value) == -1 then
+          Failure(new IllegalArgumentException("column is full"))
+        else
+          Success((value, controller.getCol(value)))
+      case Failure(exception) => Failure(exception)
 
-  def inputToInt(input: String): Try[Int] = Try(Integer.parseInt(input))
+  override def displayError(message: Throwable): Unit = println("incorrect input! "+message.getMessage)
 
-  def displayError(message: Throwable): Unit = println("incorrect input!")
-
-  def handleInput(input: String, player: Player): Option[Move] =
+  override def handleInput(input: String, player: PlayerInterface): Option[Move] =
     input match
-      case "q" => aborted; None
-      case "z" => controller.doAndPublish(controller.redo); None
-      case "y" => controller.doAndPublish(controller.undo); None
+      case "quit" => controller.abort; None
+      case "redo" => controller.doAndPublish(controller.redo); None
+      case "undo" => controller.doAndPublish(controller.undo); None
       case _ =>
         inputMatchAndToInt(input) match
-          case Success(i) => Some(Move(player,i,controller.getCol(i)))
+          case Success(i) => Some(Move(player,i._1,i._2))
           case Failure(e) => displayError(e); None
-  
-
-
-  //Feld wenn jemand gewonnen hat printen
-  //einfacher machen mit vorgegebenen Namen (Spielername am anfang abfragen)

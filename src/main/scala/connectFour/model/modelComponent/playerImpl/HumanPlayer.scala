@@ -1,10 +1,11 @@
 package connectFour.model.modelComponent.playerImpl
 
+import connectFour.model.modelComponent.{FieldInterface, PlayerInterface}
 import connectFour.model.modelComponent.fieldImpl.{Field, Move, Stone}
 
-class HumanPlayer (st: Stone, n: String) extends Player:
+class HumanPlayer (st: Stone, n: String) extends PlayerInterface:
   override val stone: Stone = st
   override val name: String = n
 
-  override def move(field: Field, m: Move): Option[Field] =
-    Some(field.put(this,m.row,m.col))
+  override def move(field: FieldInterface, m: Move): Option[FieldInterface] =
+    Some(field.put(this.stone,m.row,m.col))

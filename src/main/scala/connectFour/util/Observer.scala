@@ -16,3 +16,5 @@ enum Event:
   case Abort
   case Move
   case End
+  
+  //case für start hinzufügen ("Start")

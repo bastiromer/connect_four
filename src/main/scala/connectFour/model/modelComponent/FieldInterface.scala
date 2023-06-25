@@ -1,12 +1,16 @@
 package connectFour.model.modelComponent
 
 import connectFour.model.modelComponent.fieldImpl.{Stone, Field}
-import connectFour.model.modelComponent.playerImpl.Player
+import connectFour.model.modelComponent.PlayerInterface
 
 trait FieldInterface:
-  def put(player: Player, row: Int, col: Int): Field
+  val width: Int
+  val height: Int
+  def put(stone: Stone, row: Int, col: Int): Field
   def moveCorrect(row: Int): Int
-  def checkWin: Option[Stone]
-  def currentPlayer: Player
+  def checkWin: Option[PlayerInterface]
+  def currentPlayer: PlayerInterface
   def changePlayer(): Unit
+  def get(row: Int, col: Int): Stone
+  def playerList: Vector[PlayerInterface]
   override def toString: String
