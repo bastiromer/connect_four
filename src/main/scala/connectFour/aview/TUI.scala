@@ -13,7 +13,7 @@ import scala.util
 import scala.util.{Failure, Success, Try}
 
 
-class TUI(controller: ControllerInterface) extends Template(controller):
+class TUI(using controller: ControllerInterface) extends Template(controller):
 
   override def update(e: Event): Unit = e match
     case Event.Abort => sys.exit
@@ -38,14 +38,17 @@ class TUI(controller: ControllerInterface) extends Template(controller):
     gameLoop()
 
 
-  override def inputMatchAndToInt(str: String): Try[(Int,Int)] =
-    val row = Try(Integer.parseInt(str))
-    row match
+  override def inputMatchAndToInt(input: String): Try[(Int,Int)] =
+    val col = Try(Integer.parseInt(input))
+    col match
       case Success(value) =>
-        if controller.getCol(value) == -1 then
-          Failure(new IllegalArgumentException("column is full"))
+        if value < controller.width then
+          if controller.getRow(value) == -1 then
+            Failure(new IllegalArgumentException("column is full"))
+          else
+            Success((value, controller.getRow(value)))
         else
-          Success((value, controller.getCol(value)))
+          Failure(new IllegalArgumentException("not a row"))
       case Failure(exception) => Failure(exception)
 
   override def displayError(message: Throwable): Unit = println("incorrect input! "+message.getMessage)
@@ -55,6 +58,8 @@ class TUI(controller: ControllerInterface) extends Template(controller):
       case "quit" => controller.abort; None
       case "redo" => controller.doAndPublish(controller.redo); None
       case "undo" => controller.doAndPublish(controller.undo); None
+      case "save" => controller.save; None
+      case "load" => controller.load; None
       case _ =>
         inputMatchAndToInt(input) match
           case Success(i) => Some(Move(player,i._1,i._2))

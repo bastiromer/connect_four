@@ -1,64 +1,59 @@
-package connectFour.model.modelComponent.fileIOComponent
-package xmlImpl
+package connectFour.model.modelComponent
+package fileIOComponent.xmlImpl
 
-import connectFour.model.modelComponent.{FieldInterface, PlayerInterface}
+import com.google.inject.Inject
+import connectFour.model.modelComponent.{FieldInterface, PlayerInterface, playerImpl}
 
-import scala.xml.{Elem, Node, PrettyPrinter, XML}
+import scala.xml.{Elem, Node, NodeSeq, PrettyPrinter, XML}
+import java.io._
 import connectFour.model.modelComponent.fieldImpl.{Field, Matrix, Stone}
+import connectFour.model.modelComponent.fileIOComponent.FileIOInterface
+import connectFour.model.modelComponent.playerImpl.HumanPlayer
 
-abstract class FileIO extends FileIOInterface {
-
-  override def load: FieldInterface =
-    var field: FieldInterface = null
-    val file = XML.loadFile("grid.xml")
-    val col = (file \\ "field" \ "@colSize").text.toInt
-    val row = (file \\ "field" \ "@rowSize").text.toInt
-    val player = (file \\ "field" \ "@player").to[PlayerInterface]
-    field = new Field(col,row,Stone.Empty, player)
-
-    val fieldNodes = (file \\ "field")
-    for (index <- fieldNodes) {
-      val row: Int = (index \ "@row").text.toInt
-      val col: Int = (index \ "@col").text.toInt
-      val value: Stone = index.to[Stone]
-      field = field.put(value,row, col)
-    }
-    field
-  }
-
-  override def save(field: FieldInterface): Unit = saveXML(field)
-
-  def saveXML(field: FieldInterface): Unit = {
-    XML.save("grid.xml", matrixToXml(field))
-  }
-
-  def saveString(field: FieldInterface): Unit = {
-    import java.io._
-    val pw = new PrintWriter(new File("grid.xml"))
+class FileIO @Inject extends FileIOInterface:
+  override def save(field: FieldInterface): Unit =
     val prettyPrinter = new PrettyPrinter(120, 4)
-    val xml = prettyPrinter.format(matrixToXml(field))
+    val xml = prettyPrinter.format(toXml(field))
+    val pw = new PrintWriter(new File("field.xml"))
     pw.write(xml)
     pw.close
-  }
 
-  def matrixToXml(field: FieldInterface): Elem = {
-    <field colSize={field.height.toString} rowSize={field.width.toString}>
-      {
-      for {
-        row <- 0 until field.height
-        col <- 0 until field.width
-      } yield fieldToXml(field, row, col)
-      <player>
-      {field.playerList}
+  def toXml(field: FieldInterface): Elem =
+    <field colSize={field.getCol.toString} rowSize={field.getRow.toString}>
+      <status> {
+        for
+          row <- 0 until field.getRow
+          col <- 0 until field.getCol
+        yield
+          cellToXml(field, row, col)
+      }</status>
+      <player> {
+        field.getPlayerIndex.toString}
       </player>
-      }
     </field>
-  }
 
-  def fieldToXml(field: FieldInterface, row: Int, col: Int): Elem = {
-    val fieldValue = field.get(row, col)
-    <field row={ row.toString } col={ col.toString }>
-      { fieldValue }
-    </field>
-  }
-}
+  def cellToXml(field: FieldInterface, row: Int, col: Int): Elem =
+    <value row={ row.toString } col={ col.toString }>
+      {field.get(col, row).toString}
+    </value>
+
+  override def load: FieldInterface =
+    val file = XML.loadFile("field.xml")
+    val col = (file \\ "field" \ "@colSize").text.toInt
+    val row = (file \\ "field" \ "@rowSize").text.toInt
+    val playerIndex = (file \\ "field" \ "player").text.trim.toInt
+    var field: FieldInterface = new Field(col, row, Stone.Empty)
+
+    val fieldSeq = (file \\ "field" \ "status" \ "value")
+    for (fieldNode <- fieldSeq) {
+      val row: Int = (fieldNode \ "@row").text.toInt
+      val col: Int = (fieldNode \ "@col").text.toInt
+      val value = fieldNode.text.trim match
+        case "[31m●[0m" => Stone.Red
+        case "[33m●[0m" => Stone.Yellow
+        case _ => Stone.Empty
+      if col < field.getRow then
+        field = field.put(value, col, row)
+      field.updatePlayer(playerIndex)
+    }
+    field
