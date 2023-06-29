@@ -11,39 +11,38 @@ import connectFour.model.modelComponent.PlayerInterface
 import connectFour.model.modelComponent.fileIOComponent.FileIOInterface
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 
-case class Controller @Inject() (@Named("Field") var field: FieldInterface, val fileIO: FileIOInterface) extends ControllerInterface:
+class Controller (using var field: FieldInterface,val fileIO: FileIOInterface) extends ControllerInterface:
 
   val undoManager = new UndoManager[FieldInterface]
+  var gameState: GameState = new PlayState
   
   override def doAndPublish(doThis: Move => FieldInterface, move: Move) =
     field = doThis(move)
     field.checkWin match
-      case Some(_) => notifyObservers(Event.End)
+      case Some(_) => changeGameState(new WinState);notifyObservers(Event.End)
       case None => changePlayer();notifyObservers(Event.Move)
 
   override def doAndPublish(doThis: => FieldInterface) =
     field = doThis
     field.checkWin match
-      case Some(_) => notifyObservers(Event.End)
+      case Some(_) => changeGameState(new WinState);notifyObservers(Event.End)
       case None => changePlayer();notifyObservers(Event.Move)
-  override def put(move: Move): FieldInterface = undoManager.doStep(field, PutCommand(move))
+  override def put(move: Move): FieldInterface = gameState.makeMove(undoManager, field, move).get//undoManager.doStep(field, PutCommand(move))
   override def undo: FieldInterface = undoManager.undoStep(field)
   override def redo: FieldInterface = undoManager.redoStep(field)
 
-  override def save = fileIO.save(field)
-  override def load: FieldInterface = fileIO.load
-  
+  override def save =
+    fileIO.save(field)
+    notifyObservers(Event.Move)
+  override def load: Unit =
+    field = fileIO.load
+    notifyObservers(Event.Move)
   override def toString: String = field.toString
-
-  override def getCol(row: Int): Int = field.moveCorrect(row)
-
-  override def get(row: Int, col: Int): Stone =
-    field.get(row, col)
-  
-  override def changePlayer(): Unit =
-    field.changePlayer()
-
-  override def currentPlayer: PlayerInterface =
-    field.currentPlayer
-
+  override def getRow(col: Int): Int = field.moveCorrect(col)
+  override def get(row: Int, col: Int): Stone = field.get(row, col)
+  override def width: Int = field.getRow
+  override def height: Int = field.getCol
+  override def changePlayer(): Unit = field.changePlayer()
+  override def currentPlayer: PlayerInterface = field.currentPlayer
   override def abort: Unit = notifyObservers(Event.Abort)
+  override def changeGameState(state: GameState): Unit = gameState = state

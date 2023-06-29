@@ -13,12 +13,22 @@ enum Stone(stringRepresentation: String):
   
 object Stone:
   import play.api.libs.json._
-
-  implicit val playerInterfaceReads: Reads[Stone] = new Reads[Stone] {
-    override def reads(json: JsValue): JsResult[Stone] =
-      val stone = (json \ "stone").validate[Stone]
   
-      val s = Json.parse(stone)
-      json.validate[Stone]
+  implicit val stoneReads: Reads[Stone] = new Reads[Stone] {
+    override def reads(json: JsValue): JsResult[Stone] =
+      var player: Stone = null
+      val stone = (json \ "stone").as[String]
+      stone match
+        case "Red" => JsSuccess(Stone.Red)
+        case "Yellow" => JsSuccess(Stone.Yellow)
+        case _ => JsSuccess(Stone.Empty)
+  }
+
+  implicit val playerWrites: Writes[Stone] = new Writes[Stone] {
+    override def writes(stone: Stone): JsValue =
+      stone match
+        case Stone.Red => Json.obj("stone" -> "Red")
+        case Stone.Yellow => Json.obj("stone" -> "Yellow")
+        case Stone.Empty => Json.obj("stone" -> "Empty")
   }
     

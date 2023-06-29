@@ -8,37 +8,46 @@ import connectFour.model.modelComponent.fieldImpl
 import connectFour.model.modelComponent.fieldImpl.{Move, Stone}
 import connectFour.util.{Event, Observer}
 
-import java.awt.{Color, Font, RenderingHints}
+import java.awt.{Color, Font, RenderingHints, Toolkit}
 import javax.swing.{ImageIcon, SwingConstants, UIManager}
 import scala.swing.*
 import scala.swing.event.*
 
-class GUI(controller: ControllerInterface) extends Frame with Observer:
+class GUI(using controller: ControllerInterface) extends Frame with Observer:
   controller.add(this)
 
-  val fieldSize: (Int,Int) = (7,6)
+  val fieldSize: (Int,Int) = (controller.width, controller.height)
 
   val panelSize: Dimension = new Dimension(830,750)
+
+  val backgroundColor = Color(160,160,160)
   
   val stoneRed = ImageIcon("src/resources/StoneRed.png")
+  val stoneRedhover = ImageIcon("src/resources/StoneRedhover.png")
   val stoneYellow = ImageIcon("src/resources/StoneYellow.png")
+  val stoneYellowhover = ImageIcon("src/resources/StoneYellowhover.png")
   val stoneEmpty = ImageIcon("src/resources/StoneEmpty.png")
+  val stoneEmptyhover = ImageIcon("src/resources/StoneEmptyhover.png")
   val playerRed = ImageIcon("src/resources/PlayerRed.png")
   val playerYellow = ImageIcon("src/resources/PlayerYellow.png")
+  val menuIcon = ImageIcon("src/resources/MenuIcon.png")
+  val logo: Image = Toolkit.getDefaultToolkit.getImage("src/resources/Logo.png")
 
   title = "Connect Four"
-  //iconImage =
+  iconImage = logo
   resizable = false
 
   menuBar = new MenuBar {
     contents += new Menu("") {
-      //icon =      //Menu icon
+      icon = menuIcon
       borderPainted = false
       contents += MenuItem(Action("Exit") {controller.abort})
-      contents += MenuItem(Action("Undo") {controller.undo})
-      contents += MenuItem(Action("Redo") {controller.redo})
-      contents += MenuItem(Action("Save") {}) //save methode in controller
-      contents += MenuItem(Action("Load") {}) //load methode in controller
+      contents += Separator()
+      contents += MenuItem(Action("Undo") {controller.doAndPublish(controller.undo)})
+      contents += MenuItem(Action("Redo") {controller.doAndPublish(controller.redo)})
+      contents += Separator()
+      contents += MenuItem(Action("Save") {controller.save})
+      contents += MenuItem(Action("Load") {controller.load})
     }
 
     override def paintComponent(g: Graphics2D): Unit =
@@ -47,9 +56,6 @@ class GUI(controller: ControllerInterface) extends Frame with Observer:
   }
 
   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName)
-
-  menuBar.border = Swing.EmptyBorder(5, 10, 0, 0)
-  //menuBar.background
   update(Event.Move)
   centerOnScreen
   open()
@@ -70,21 +76,19 @@ class GUI(controller: ControllerInterface) extends Frame with Observer:
 
   def revise(playerState: FlowPanel): BorderPanel = new BorderPanel {
     preferredSize = panelSize
-    //background =
+    background = backgroundColor
     add(playerState, BorderPanel.Position.North)
     add(CellPanel(fieldSize._1,fieldSize._2), BorderPanel.Position.Center)
   }
 
   def playerTurn: FlowPanel = new FlowPanel {
-    //background =
     contents += new Label {
       icon = controller.currentPlayer.name match
         case "RED" => playerRed
         case "YELLOW" => playerYellow
     }
     val label = Label(" Turn")
-    //label.foreground =
-    //label.font = Font()
+    label.font = Font("Segoe Print", 1 , 24)
     contents += label
 
     override def paintComponent(g: Graphics2D) =
@@ -93,22 +97,22 @@ class GUI(controller: ControllerInterface) extends Frame with Observer:
   }
 
   def playerResult: FlowPanel = new FlowPanel {
-    //background =
-    //val fontType = Font()
     contents += new Label{
       icon = controller.currentPlayer.name match
         case "RED" => playerRed
         case "YELLOW" => playerYellow
     }
     val label = Label(" wins!!")
-    //label.font = fontType
-    //label.foreground =
+    label.font = Font("Segoe Print", 1 , 40)
     contents += label
+
 
     override def paintComponent(g: Graphics2D): Unit =
       renderHints(g)
       super.paintComponent(g)
   }
+
+
 
   class CellPanel(x: Int, y: Int) extends GridPanel(fieldSize._2,fieldSize._1):
     opaque = false
@@ -121,7 +125,6 @@ class GUI(controller: ControllerInterface) extends Frame with Observer:
 
     private def bar(row: Int, col: Int) =
       contents += CellButton(row, col, controller.get(row, col))
-
 
 
   class CellButton(x: Int, y: Int, stone: Stone) extends Button:
@@ -143,7 +146,15 @@ class GUI(controller: ControllerInterface) extends Frame with Observer:
 
     reactions += {
       case MouseClicked(source) =>
-        controller.doAndPublish(controller.put, Move(controller.currentPlayer, x, y))
-      //case MouseMoved(source) =>
-      //case MouseExited(source) =>
+        controller.doAndPublish(controller.put, Move(controller.currentPlayer, y, controller.getRow(y)))
+      case MouseMoved(source) =>
+        icon = stone match
+          case Stone.Red => stoneRedhover
+          case Stone.Yellow => stoneYellowhover
+          case Stone.Empty => stoneEmptyhover
+      case MouseExited(source) =>
+        icon = stone match
+          case Stone.Red => stoneRed
+          case Stone.Yellow => stoneYellow
+          case Stone.Empty => stoneEmpty
     }
