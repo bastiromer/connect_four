@@ -11,18 +11,9 @@ class HumanPlayerSpec extends AnyWordSpec:
       player.name should be("Red")
       player.stone should be(Stone.Red)
     }
-    /*"should put his stone in the field" in {
-      val field = new Field(3, 3, Stone.Empty)
-      val player1 = HumanPlayer(Stone.Empty,"Red")
-      val move = Move(player1, 0, 0)
-      player1.move(field, move).get should be(("""#+---+---+---+---+
-                                          #|   |   |   |
-                                          #+---+---+---+---+
-                                          #|   |   |   |
-                                          #+---+---+---+---+
-                                          #|   |   |   |
-                                          #+---+---+---+---+
-                                          #  0   1   2   3  """).stripMargin('#'))
+    "habe another name and Stone" in {
+      val newPlayer = HumanPlayer(Stone.Empty,"empty")
+      newPlayer.name should be("empty")
+      newPlayer.stone should be(Stone.Empty)
     }
-    */
   }

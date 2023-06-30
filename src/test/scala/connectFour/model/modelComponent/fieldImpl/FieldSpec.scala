@@ -11,9 +11,14 @@ class FieldSpec extends AnyWordSpec:
     }
     "give the playerndex" in {
       field.getPlayerIndex should be(0)
+      field.changePlayer()
+      field.getPlayerIndex should be(1)
     }
     "update the playerindex" in {
       field.updatePlayer(1)
       field.getPlayerIndex should be(1)
+    }
+    "get the row from matrix" in {
+      field.matrix.row(0)
     }
   }

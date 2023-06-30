@@ -10,7 +10,7 @@ import connectFour.model.modelComponent.fieldImpl.{Field, Matrix, Stone}
 import connectFour.model.modelComponent.fileIOComponent.FileIOInterface
 import connectFour.model.modelComponent.playerImpl.HumanPlayer
 
-class FileIO @Inject extends FileIOInterface:
+class FileIO extends FileIOInterface:
   override def save(field: FieldInterface): Unit =
     val prettyPrinter = new PrettyPrinter(120, 4)
     val xml = prettyPrinter.format(toXml(field))
@@ -52,7 +52,7 @@ class FileIO @Inject extends FileIOInterface:
         case "[31m●[0m" => Stone.Red
         case "[33m●[0m" => Stone.Yellow
         case _ => Stone.Empty
-      if col < field.getRow then
+      if (row < field.getRow-1 && col < field.getCol-1)then
         field = field.put(value, col, row)
       field.updatePlayer(playerIndex)
     }
