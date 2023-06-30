@@ -5,4 +5,4 @@ import connectFour.util.UndoManager
 
 class WinState extends GameState:
   override def makeMove(undoManager: UndoManager[FieldInterface], field: FieldInterface, move: Move): Option[FieldInterface] =
-    None
+    Some(field)
