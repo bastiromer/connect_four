@@ -6,5 +6,5 @@ import Default.given
 
 object ConnectFour:
   @main def run: Unit =
-    GUI()
+    //GUI()
     TUI().run
